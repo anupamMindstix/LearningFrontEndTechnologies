@@ -16,9 +16,18 @@
   <!-- Custom styles for this template -->
   <link href="css/shop-item.css" rel="stylesheet">
   <script type="text/javascript" src="js/lib/jquery-1.8.3.min.js"></script>
-  
+  <!-- <script type="text/javascript" src="js/lib/slick.min.js"></script> -->
+  <!-- <script type="text/javascript" src="js/carousel.js"></script> -->
   <script type="text/javascript" src="js/electronic.js"></script>
   <script type="text/javascript" src="js/request.js"></script>
+  <!-- <script type="text/javascript">
+ function plusSlidesFunction(n) {
+   console.log("bhai ye kya ho");
+   
+  var carousel = new Carousel(n);
+  carousel.plusSlides;
+  }
+</script> -->
 </head>
 
 <body>
@@ -44,27 +53,31 @@
   </nav> -->
 
   <!-- Page Content -->
-  <div class="container" id = "container">
-    <div class="col-lg-12 row" >
+  <div class="container" id="container">
+    <div class="col-lg-12 row">
       <div id="myCarousel" class="carousel">
-        <div class="slides" id= "slides">
-          <!-- <div class="slide" data-state="active">
-              <img class="d-block img-fluid" src="images/iphone_6.jpg" ></div>
-          <div class="slide">
-              <img class="d-block img-fluid" src="images/Gionee.jpeg" >
+        <div class="img-slides" id="img-slides">
+            <!-- <div  class="img-slide prev-Img overlay" data-state = "">
+                <img class="show d-block img-fluid" id = "prevImg"  src="" >
+              </div> -->
+          <div  class="slide current-Img overlay" data-state = "">
+            <img class="d-block img-fluid" id = "currentImg"  src="" >
           </div>
-          <div class="slide">
-              <img class="d-block img-fluid" src="images/vivo.jpg" >
-          </div> -->
+          <!-- <div  class="img-slide next-Img overlay " data-state = "">
+              <img class="show d-block img-fluid" id = "nextImg"  src="" >
+            </div> -->
         </div>
-        <!-- <div class="indicators">
-          <input class="indicator" name="indicator" data-slide="1" data-state="active" checked type="radio" />
-          <input class="indicator" name="indicator" data-slide="2" type="radio" />
-          <input class="indicator" name="indicator" data-slide="3" type="radio" />
-        </div> -->
-      </div>   
-   <!-- /.col-lg-9 -->
-  </div>
+        <a class="arrow" id= "left" >
+          <img class="arrowImg" id = "leftArrow" src="" > </a>
+        <a class=" arrow" id = "right" >
+          <img class="arrowImg" id = "rightArrow" src="" >
+        </a>
+        <button type="button" class ="button" id ="btn" value= 'disable_loop'>Auto slide enable and disable</button>
+        <a class=" button" id = "home" href = "">
+          <button type="button" class ="button" id ="home-btn" >HOME</button>
+        </a>
+      </div>
+    </div>
   </div>
   <!-- /.container -->
 
@@ -79,6 +92,7 @@
   <script src="vendor/jquery/jquery.min.js"></script>
   <!-- <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script> -->
   <script type="text/javascript" src="js/carousel.js"></script>
+  <!-- <script type="text/javascript" src="js/lib/slick.min.js"></script> -->
 </body>
 
 </html>

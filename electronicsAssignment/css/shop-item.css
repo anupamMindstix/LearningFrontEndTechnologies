@@ -4,6 +4,7 @@
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-shop-item/blob/master/LICENSE)
  */
 
+ 
 body {
   padding-top: 10px;
 }
@@ -48,37 +49,24 @@ body {
   width: 750px;
 }
 
-.slides {
-  height: 100%;
-  width: 100%;
-  position: relative;
-}
-
-.slide {
+#left {
   position: absolute;
-  top: 0;
   left: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
   height: 100%;
-  width: 100%;
-  font-size: 3em;
-  color: white;
-  line-height: 400px;
-  text-align: center;
-  opacity: 0;
-  transition: opacity 1000ms;
 }
 
-
-.slide[data-state=active] {
-  display: block;
-}
-
-.indicators {
+#right {
   position: absolute;
-  bottom: 20px;
-  right: 20px;
+  right : 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  height: 100%;
 }
 
-.indicator {
-    cursor: pointer;
+#left img, #right img {
+  height: 100%;
 }

@@ -13,14 +13,38 @@ var HttpClient = function () {
 
 var electronicsUrl = 'https://ecom-anupam.firebaseio.com/images.json';
 var client = new HttpClient();
+//var loop;
 client.get(electronicsUrl, function (response) {
+     //alert("the response from the server is :", response);
      var responseJson = JSON.parse(response);
      var imageArray = responseJson.payload.multiple;
+     var loop = responseJson.payload.brandingInfo.loop;
+     var autoSlideTimeInterval = responseJson.payload.brandingInfo.autoSlideTimeInSec;
+     autoSlideTimeInterval = (autoSlideTimeInterval) * 1000;
+     var leftNavButton = responseJson.payload.brandingInfo.navigationButtonURL.prevNavigationImageUrl;
+     var rightNavButton = responseJson.payload.brandingInfo.navigationButtonURL.nextNavigationImageUrl; 
+     var swipeAnimation = responseJson.payload.brandingInfo.swipeAnimation;
+     var backgroundColor = responseJson.payload.brandingInfo.backgroundColour;
+     var homeButtonURL = responseJson.payload.brandingInfo.homeButtonImageURL;
+     var orientation = responseJson.payload.brandingInfo.orientation;
+
      //alert(imageArray[0].FHD_ImageUrl)
-    // alert(imageArray);
+     //  alert(imageArray);
+     // alert ("the value of the loop : " +  loop);
+
      //console.log(response);
-var carousel = new Carousel(imageArray);
-carousel.display;
+     //  var carousel = new Carousel(imageArray,loop)
+     if ((imageArray.length > 0) && (loop != null) && (autoSlideTimeInterval != null )&&(swipeAnimation != null) && (orientation != null) && (rightNavButton != null) && (leftNavButton != null) && (homeButtonURL != null)) {
+         console.log("the image array length is :",imageArray.length);
+         console.log("the value of loop  is :",loop);
+         console.log("the value of autoSlideTimeInterval is:",autoSlideTimeInterval);
+         console.log("the value of swipe animation is:",swipeAnimation);
+         console.log("the value of orientation  is:",orientation );
+          var carousel = new Carousel(imageArray, loop,  autoSlideTimeInterval, swipeAnimation, orientation,leftNavButton,rightNavButton,homeButtonURL);
+          carousel.display;
+     }
+     // alert("the lenth of the image Array is :", imageArray.length );
+     //alert("the value of the loop is : ", loop);
      //  for (var i = 0; i < imageArray.length; i++) {
      //       var imgUrl = imageArray[i].FHD_ImageUrl;
      //      //  var description = responseForElectronics[i].description;
@@ -31,7 +55,7 @@ carousel.display;
      //      // electronicProduct.display();
 
      //  }
- 
+
 });
 
 // $.ajax({
@@ -51,7 +75,7 @@ carousel.display;
 //           //      var electronicProduct = new ElectronicProduct(name, imgUrl,price,rating,description);
 //           //     electronicProduct.display();
 //           // }
-       
+
 //      }
 //    });
 

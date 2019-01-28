@@ -1,133 +1,177 @@
-// var carousel = document.getElementById('myCarousel');
 
+var interval; // 2 seconds
+var i = 0;
+var imageArraylength = new Number();
+var imageArr = [];
+// var operation = new String();
 var switcher;
-var noOfSlides = new Number(); 
-//var slideArray = $(".slide");
- //var interval = 5000; // 2 seconds
+var autoSlide = true;
+var swipeAnimationStrategy;
+var slideOrientation;
+var loopValue;
+var leftNav;
+var rightNav;
 
-function carouselHide(num) {
-    var slideArray = $(".slide")
-   // indicators[num].setAttribute('data-state', '');
-   if(slideArray.length>0){
-   $(slideArray[num]).attr('data-state', "");
-   // slides[num].setAttribute('data-state', "");
-
-   slideArray[num].style.opacity=0;
-   }
-}
-
-function carouselShow(num) {
-    // indicators[num].checked = true;
-    // indicators[num].setAttribute('data-state', 'active');
-    var slideArray = $(".slide");
-    if(slideArray.length>0){
-    console.log("slideArray: " + slideArray.length);
-    $(slideArray[num]).attr('data-state', "active");
-
-    //$("[data-state=active]").show();
-    slideArray[num].style.opacity=1;
+function Carousel(imageArray, loop, autoSlideTimeInterval, swipeAnimation, orientation, leftNavButton, rightNavButton, homeButtonURL) {
+    imageArr = JSON.parse(JSON.stringify(imageArray));
+    imageArraylength = imageArray.length;
+    console.log("the value of loop in the carousel is :", loop);
+    if (autoSlideTimeInterval == 0) {
+        autoSlide = false;
     }
-    // clearInterval(switcher);
+    interval = autoSlideTimeInterval;
+    swipeAnimationStrategy = swipeAnimation;
+    slideOrientation = orientation;
+
+    loopValue = loop;
+
+    $('#leftArrow').attr('src', leftNavButton);
+    $('#rightArrow').attr('src', rightNavButton);
+    $('#home').attr('href', homeButtonURL);
+    this.display = display();
+    console.log('interval in constructor...' + interval);
+
 }
 
-// function setSlide(slide) {
-//     return function() {
-//         // Reset all slides
-//         for (var i = 0; i < noOfSlides; i++) {
-//          //   indicators[i].setAttribute('data-state', '');
-//             slides[i].setAttribute('data-state', '');
-            
-//             carouselHide(i);
-//         }
-
-//         // Set defined slide as active
-//       //  indicators[slide].setAttribute('data-state', 'active');
-//         slides[slide].setAttribute('data-state', 'active');
-//         carouselShow(slide);
-
-//         // Stop the auto-switcher
-//         clearInterval(switcher);
-//     };
-// }
-
-function switchSlide(noOfSlides) {
-    var nextSlide = 0;
-   var slideArray = $(".slide");
-    // Reset all slides
-    // for (var i = 0; i <noOfSlides; i++) {
-    //     // If current slide is active & NOT equal to last slide then increment nextSlide
-    //     if ((indicators[i].getAttribute('data-state') == 'active') && (i !== (indicators.length-1))) {
-    //         nextSlide = i + 1;
-    //     }
-
-    for (var i = 0; i <= noOfSlides; i++) {
-        // If current slide is active & NOT equal to last slide then increment nextSlide
-        if ( ($(slideArray[i]).attr('data-state')=="active")&& (i !== (noOfSlides + 1))) {
-            nextSlide = i + 1;
+$('#btn').bind('click', function (event) {
+    if ($('#btn').attr('value') == 'disable_loop') {
+        console.log("autoSlide disabled");
+        clearInterval(switcher);
+        autoSlide = false;
+        $('#btn').attr('value', 'start_loop');
+    } else {
+        if ($('#btn').attr('value') == 'start_loop') {
+            autoSlide = true;
+            console.log("autoSlide enabled");
+            changeImage();
+            switcher = setInterval(function () {
+                i++;
+                changeImage();
+            }, interval);
+            $('#btn').attr('value', 'disable_loop');
         }
-        // Remove all active states & hide
-        carouselHide(i);
     }
-
-//     // Set next slide as active & show the next slide
-    carouselShow(nextSlide);
 }
+);
 
-// if (carousel) {
-//     var slides = carousel.querySelectorAll('.slide');
-//     alert(slides.toString);
-//     var indicators = carousel.querySelectorAll('.indicator');
-//     alert(indicators);
-//     var switcher = setInterval(function() {
-//         switchSlide();
-//     }, speed);
 
-//     for (var i = 0; i < indicators.length; i++) {
-//         indicators[i].addEventListener("click", setSlide(i));
-//     }
-// }
-
-var interval = 5000; // 2 seconds
-
-function Carousel(imageArray) {
-
-    this.noOfSlides = imageArray.length -1 ;
-    this.display = display(imageArray);
-  
-    
-}
-
-function display(imageArray){
-
-    //alert("i m at display function")
-    for (var i = 0; i < imageArray.length; i++) {
-        var imgUrl = imageArray[i].FHD_ImageUrl;
-        var temp =  '<div id="' + i + '" class="slide " data-state = "">'+
-              '<img class="d-block img-fluid" src="'+ imgUrl+'" >'+
-        '</div>';
-        $('#slides').append(temp);
-         
+$('#left').bind("click", function (event) {
+    console.log("prev is clicked");
+    console.log('interval in left click...' + interval)
+    i--;
+    console.log("prev is clicked the value of i :", i);
+    if (autoSlide) {
+        clearInterval(switcher);
+        changeImage();
+        switcher = setInterval(function () {
+            i++;
+            changeImage();
+        }, interval);
+    } else {
+        changeImage();
     }
+});
 
-   
-   //carouselShow(0);
+$('#right').bind("click", function (event) {
+    console.log("next is clicked");
+    i++;
+    if (autoSlide) {
+        clearInterval(switcher);
+        changeImage();
+        switcher = setInterval(function () {
+            i++;
+            changeImage();
+        }, interval);
+    } else {
+        changeImage();
+    }
+});
 
-    switcher = setInterval(function() {
-        switchSlide(noOfSlides);
-    }, interval);
-    
+function display() {
+    console.log("the value of interval is :" + interval);
+    changeImage();
+    var imgUrl = imageArr[i].FHD_ImageUrl;
+    $('#currentImg').attr('src', imgUrl);
+    if (autoSlide) {
+        switcher = setInterval(function () {
+            i++;
+            changeImage();
+        }, interval);
+    }
 }
 
-// function displaySlides(imageArray){
-    
-//     for (var i = 0; i < imageArray.length; i++) {
-//               var imgUrl = imageArray[i].FHD_ImageUrl;
-//               var temp =  '<div class="slide">'+
-//                     '<img class="d-block img-fluid" src="'+ imgUrl+'" >'+
-//               '</div>';
-//               $(temp).insertAfter('#myCarousel');
+function changeImage() {
 
-               
-//          }
-//          clearInterval();
-// }
+    // if(operation == "prev"){
+    //     
+    // }
+    console.log("the value of loop in the change Imamge function is: ", loopValue);
+    if (i >= imageArraylength) {
+        if (loopValue) {
+            i = 0;
+        }
+        else {
+            i = imageArraylength - 1;
+        }
+    }
+    if (i < 0) {
+        if (loopValue) {
+            i = imageArraylength - 1
+        } else {
+            i = 0;
+        }
+    }
+    if (i >= 0 && i <= imageArraylength - 1) {
+        console.log("the value of the autoSlide here is :", autoSlide);
+        if ((autoSlide == true)&&(i <=0 ) &&(loopValue == false)) {
+            $('#left').hide();
+            $('#right').show();
+        } else {
+            if((autoSlide == true)&&(i >= imageArraylength - 1 ) &&(loopValue == false)){
+                $('#left').show();
+                $('#right').hide(); 
+            
+            } else{
+                   if ((i <= 0) && (loopValue == false)) {
+                  console.log("hiding the leftArrow and showing the right arrow");
+                 $('#left').hide();
+                 $('#right').show();
+            }else {
+                if ((i >= imageArraylength - 1) && ((loopValue == false))) {
+                    console.log("hiding the rightArrow and showing the left arrow");
+                    $('#left').show();
+                    $('#right').hide();
+                } else {
+                    console.log("showing both the arrows");
+                    $('#left').show();
+                    $('#right').show();
+                }
+            }
+        }
+
+    }
+    }
+    console.log("the value of i : ", i);
+    var imgUrl = imageArr[i].FHD_ImageUrl;
+    // console.log("the image Url is :", imgUrl, typeof imgUrl);
+    // $('#currentImg').animate({left:'200px'},0)
+    // if(i > 0){
+    //     imageArr[i-1].FHD_ImageUrl;
+    //     $('#prevImg').attr('src', imgUrl);
+    //     $('#prevImg').hide();
+    // }
+    // if(i < imageArraylength){
+    //     $('#nextImg').attr('src', imgUrl);
+    //     $('#nextImg').hide();
+    // }
+    //$("#currentImg").animate({opacity: "0"});
+    $('#currentImg').attr('src', imgUrl);
+    //$("#currentImg").animate({opacity: "1"},4000);
+    //$('#currentImg').slideUp();
+    // $('#currentImg').animate({left:'10px'},5000)
+
+    // i++;
+    //console.log("switcher >>>", switcher);
+
+}
+
